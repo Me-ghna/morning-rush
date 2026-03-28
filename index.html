@@ -2,24 +2,91 @@
 <html>
 <head>
     <title>Morning Rush</title>
+
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #ff7e5f, #feb47b);
+            color: #333;
+        }
+
+        .container {
+            max-width: 400px;
+            margin: 60px auto;
+            background: white;
+            padding: 30px;
+            border-radius: 16px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            text-align: center;
+        }
+
+        h1 {
+            margin-bottom: 5px;
+        }
+
+        p {
+            color: #666;
+        }
+
+        .menu {
+            text-align: left;
+            margin-top: 20px;
+        }
+
+        .menu p {
+            font-size: 18px;
+            margin: 8px 0;
+        }
+
+        .offer {
+            margin: 20px 0;
+            font-weight: bold;
+            color: #ff5722;
+        }
+
+        button {
+            width: 100%;
+            padding: 15px;
+            font-size: 18px;
+            background: #25D366;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        button:hover {
+            background: #1ebe5d;
+        }
+    </style>
 </head>
 
-<body style="text-align:center; font-family:Arial;">
+<body>
 
-    <h1>🌅 Morning Rush</h1>
-    <p>Fresh Juices Delivered (6–9 AM)</p>
+    <div class="container">
 
-    <h2>Menu</h2>
-    <p>🍊 Orange</p>
-    <p>🍍 Pineapple</p>
-    <p>🥕 ABC Juice</p>
-    <p>🥬 Green Detox</p>
+        <h1>🌅 Morning Rush</h1>
+        <p>Fresh Juices Delivered (6–9 AM)</p>
 
-    <h3>🔥 Buy 2 Get 1 FREE</h3>
+        <div class="menu">
+            <h2>Menu</h2>
+            <p>🍊 Orange</p>
+            <p>🍍 Pineapple</p>
+            <p>🥕 ABC Juice</p>
+            <p>🥬 Green Detox</p>
+        </div>
 
-    <a href="https://wa.me/91XXXXXXXXXX?text=Hi%20I%20want%20to%20order">
-        <button>Order on WhatsApp</button>
-    </a>
+        <div class="offer">
+            🔥 Buy 2 Get 1 FREE
+        </div>
+
+        <a href="https://wa.me/91XXXXXXXXXX?text=Hi%20I%20want%20to%20order">
+            <button>Order on WhatsApp</button>
+        </a>
+
+    </div>
 
 </body>
 </html>

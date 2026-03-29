@@ -18,7 +18,6 @@ def bot():
             "Menu:\n🍊 Orange\n🍍 Pineapple\n🥕 ABC\n🥬 Green Detox\n\n"
             "Send: Juice + Quantity + Address"
         )
-
     elif "orange" in msg or "pineapple" in msg:
         response.message("Got it! Please send your address 📍")
 

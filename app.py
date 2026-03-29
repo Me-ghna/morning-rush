@@ -3,6 +3,10 @@ from twilio.twiml.messaging_response import MessagingResponse
 
 app = Flask(__name__)
 
+@app.route("/")
+def home():
+    return "Morning Rush Bot is Running 🚀"
+
 @app.route("/bot", methods=["POST"])
 def bot():
     msg = request.values.get("Body", "").lower()

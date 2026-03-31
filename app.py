@@ -3,6 +3,7 @@ from twilio.twiml.messaging_response import MessagingResponse
 
 app = Flask(__name__)
 
+# 🧠 Store user progress
 user_state = {}
 
 # 🧾 MENU DATA
@@ -23,16 +24,19 @@ menu = {
     "energy combo": 100
 }
 
+# 🟢 Home route (just to check server)
 @app.route("/")
 def home():
     return "Bot is live 🚀"
 
+# 🟢 WhatsApp bot route
 @app.route("/bot", methods=["POST"])
 def bot():
     phone = request.values.get("From")
-    msg = request.values.get("Body", "").lower()
+    msg = request.values.get("Body", "").lower().strip()
     response = MessagingResponse()
 
+    # Initialize user
     if phone not in user_state:
         user_state[phone] = {"step": "start"}
 
@@ -41,16 +45,35 @@ def bot():
     # 🟢 STEP 1: SHOW MENU
     if state["step"] == "start":
         response.message(
-            "🌅 *Morning Rush Menu*\n\n"
+            "🌅 *Welcome to Morning Rush!*\n"
+            "Fresh Energy. Every Morning ☀️\n\n"
+
+            "📋 *MENU (250ml unless mentioned)*\n\n"
+
             "🥤 *Classic Juices*\n"
-            "Orange ₹60\nPineapple ₹70\nWatermelon ₹50\nApple ₹70\nMosambi ₹60\n\n"
-            "💪 *Health Juices*\n"
-            "ABC ₹80\nGreen Detox ₹90\nCarrot Beetroot ₹70\n\n"
-            "⚡ *Power Shots*\n"
-            "Amla ₹40\nGinger Lemon ₹30\nHoney Lemon ₹30\n\n"
+            "🍊 Orange – ₹60\n"
+            "🍍 Pineapple – ₹70\n"
+            "🍉 Watermelon – ₹50\n"
+            "🍎 Apple – ₹70\n"
+            "🍋 Mosambi – ₹60\n\n"
+
+            "💪 *Health & Fitness*\n"
+            "🥕 ABC (Apple+Beetroot+Carrot) – ₹80\n"
+            "🥬 Green Detox – ₹90\n"
+            "🥕 Carrot Beetroot – ₹70\n\n"
+
+            "⚡ *Power Shots (100ml)*\n"
+            "🍏 Amla – ₹40\n"
+            "🍋 Ginger Lemon – ₹30\n"
+            "🍯 Honey Lemon – ₹30\n\n"
+
             "🔥 *Combos*\n"
-            "Fitness Combo ₹110\nDetox Combo ₹120\nEnergy Combo ₹100\n\n"
-            "👉 Type item name to order"
+            "Fitness Combo – ₹110\n"
+            "Detox Combo – ₹120\n"
+            "Energy Combo – ₹100\n\n"
+
+            "👉 *What would you like to order?*\n"
+            "Type item name (example: *orange*)"
         )
         state["step"] = "item"
 
@@ -58,19 +81,30 @@ def bot():
     elif state["step"] == "item":
         if msg in menu:
             state["item"] = msg
-            response.message("How many do you want?")
+            response.message(
+                f"👍 Great choice! *{msg.title()}*\n\n"
+                "👉 How many *glasses/units* do you want?\n"
+                "Example: 1, 2, 3..."
+            )
             state["step"] = "quantity"
         else:
-            response.message("❌ Item not found. Please type correct name.")
+            response.message(
+                "❌ Item not found.\n"
+                "Please type correct name (example: orange, abc, fitness combo)"
+            )
 
     # 🟢 STEP 3: QUANTITY
     elif state["step"] == "quantity":
         if msg.isdigit():
             state["quantity"] = int(msg)
-            response.message("📍 Please send your address")
+            response.message(
+                f"👌 Noted: *{state['quantity']} x {state['item'].title()}*\n\n"
+                "📍 Please send your *full delivery address*\n"
+                "(House no, street, landmark)"
+            )
             state["step"] = "address"
         else:
-            response.message("Please enter a valid number")
+            response.message("❌ Please enter a valid number (example: 1, 2, 3)")
 
     # 🟢 STEP 4: ADDRESS + BILL
     elif state["step"] == "address":
@@ -80,16 +114,29 @@ def bot():
         total = price * state["quantity"]
 
         response.message(
-            f"✅ *Order Confirmed*\n\n"
-            f"Item: {state['item']}\n"
-            f"Qty: {state['quantity']}\n"
-            f"Total: ₹{total}\n"
-            f"Address: {state['address']}\n\n"
-            f"⏰ Delivery: 6–9 AM\n"
+            f"🎉 *Order Confirmed!*\n\n"
+
+            f"🧾 *Order Details*\n"
+            f"Item: {state['item'].title()}\n"
+            f"Quantity: {state['quantity']}\n"
+            f"Total: ₹{total}\n\n"
+
+            f"📍 Address:\n{state['address']}\n\n"
+
+            f"⏰ Delivery: *6–9 AM*\n"
+            f"🕙 Order before: *10 PM*\n\n"
+
             f"💰 Payment: UPI / Cash\n"
-            f"👉 Pay: yourupi@bank"
+            f"👉 UPI: yourupi@bank\n\n"
+
+            f"🙏 Thank you for choosing *Morning Rush!*"
         )
 
+        # Reset user after order
         user_state.pop(phone)
 
     return str(response)
+
+# Run app
+if __name__ == "__main__":
+    app.run()

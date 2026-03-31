@@ -68,9 +68,9 @@ def bot():
             "🍯 Honey Lemon – ₹30\n\n"
 
             "🔥 *Combos*\n"
-            "Fitness Combo – ₹110\n"
-            "Detox Combo – ₹120\n"
-            "Energy Combo – ₹100\n\n"
+            "Fitness Combo(ABC+Amla Shot) – ₹110\n"
+            "Detox Combo(Green Juice+Ginger Shot) – ₹120\n"
+            "Energy Combo(Orange+Pineapple) – ₹100\n\n"
 
             "👉 *What would you like to order?*\n"
             "Type item name (example: *orange*)"

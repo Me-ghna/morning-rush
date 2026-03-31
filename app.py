@@ -3,31 +3,46 @@ from twilio.twiml.messaging_response import MessagingResponse
 
 app = Flask(__name__)
 
-@app.route("/")
-def home():
-    return "Morning Rush Bot is Running 🚀"
+user_state = {}
 
 @app.route("/bot", methods=["POST"])
 def bot():
+    phone = request.values.get("From")
     msg = request.values.get("Body", "").lower()
     response = MessagingResponse()
 
-    if "hi" in msg or "hello" in msg:
+    if phone not in user_state:
+        user_state[phone] = {"step": "start"}
+
+    state = user_state[phone]
+
+    if state["step"] == "start":
         response.message(
             "Welcome to Morning Rush 🌅\n\n"
             "Menu:\n🍊 Orange\n🍍 Pineapple\n🥕 ABC\n🥬 Green Detox\n\n"
-            "Send: Juice + Quantity + Address"
+            "Type juice name to order"
         )
-    elif "orange" in msg or "pineapple" in msg:
-        response.message("Got it! Please send your address 📍")
+        state["step"] = "juice"
 
-    elif "address" in msg:
-        response.message("Your total is ₹100\nPay via UPI: yourupi@bank")
+    elif state["step"] == "juice":
+        state["juice"] = msg
+        response.message("How many do you want?")
+        state["step"] = "quantity"
 
-    else:
-        response.message("Please send proper order 😊")
+    elif state["step"] == "quantity":
+        state["quantity"] = msg
+        response.message("Please send your address 📍")
+        state["step"] = "address"
+
+    elif state["step"] == "address":
+        state["address"] = msg
+        response.message(
+            f"Order Confirmed ✅\n\n"
+            f"Juice: {state['juice']}\n"
+            f"Quantity: {state['quantity']}\n"
+            f"Address: {state['address']}\n\n"
+            f"Delivery: 6–9 AM"
+        )
+        user_state.pop(phone)
 
     return str(response)
-
-if __name__ == "__main__":
-    app.run()

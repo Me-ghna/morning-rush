@@ -4,6 +4,9 @@ from twilio.twiml.messaging_response import MessagingResponse
 app = Flask(__name__)
 
 user_state = {}
+@app.route("/")
+def home():
+    return "Bot is live 🚀"
 
 @app.route("/bot", methods=["POST"])
 def bot():
